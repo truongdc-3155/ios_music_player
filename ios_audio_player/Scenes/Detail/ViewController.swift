@@ -38,7 +38,6 @@ class ViewController: UIViewController {
         player?.stop()
     }
     
-    
     private func initialize() {
         songs = Song.getPlayList()
         configure()
@@ -64,7 +63,10 @@ class ViewController: UIViewController {
         let url = Bundle.main.path(forResource: songs[curentIndex].fileName, ofType: "mp3")
         do {
             let session = AVAudioSession.sharedInstance()
-            try session.setMode(.default)
+            try session.setCategory(
+                .playback,
+                mode: .default
+            )
             try session.setActive(true, options: .notifyOthersOnDeactivation )
             guard let url = url else {return}
             player = try AVAudioPlayer(contentsOf: URL(string: url) ?? URL(fileURLWithPath: ""))
@@ -73,30 +75,54 @@ class ViewController: UIViewController {
         } catch {
             print("Error: \(error)")
         }
+        setupRemoteCommandCenter()
+        updateNowPlayingInfo(song: songs[curentIndex])
         setUISong(songs[curentIndex])
     }
-    
-    
 
-    override func remoteControlReceived(with event: UIEvent?) {
-        guard let type = event?.subtype else {return}
-        
-        switch type {
-        case .remoteControlPlay:
-            player?.play()
-        case .remoteControlPause:
-            player?.pause()
-        case .remoteControlStop:
-            player?.stop()
-        case .remoteControlPreviousTrack:
-             actionNextOrPrevios(false)
-        case .remoteControlNextTrack:
-             actionNextOrPrevios(true)
-        default :
-            break
+    private func setupRemoteCommandCenter() {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.playCommand.removeTarget(nil)
+        commandCenter.pauseCommand.removeTarget(nil)
+        commandCenter.nextTrackCommand.removeTarget(nil)
+        commandCenter.previousTrackCommand.removeTarget(nil)
+
+        commandCenter.playCommand.addTarget { [weak self] _ in
+            self?.player?.play()
+            self?.isPlaying = true
+            self?.setBtnPlayOrPause()
+            return .success
+        }
+        commandCenter.pauseCommand.addTarget { [weak self] _ in
+            self?.player?.pause()
+            self?.isPlaying = false
+            self?.setBtnPlayOrPause()
+            return .success
+        }
+        commandCenter.nextTrackCommand.addTarget { [weak self] _ in
+            self?.actionNextOrPrevios(true)
+            return .success
+        }
+        commandCenter.previousTrackCommand.addTarget { [weak self] _ in
+            self?.actionNextOrPrevios(false)
+            return .success
         }
     }
-    
+
+    private func updateNowPlayingInfo(song: Song) {
+        var info = [String: Any]()
+        info[MPMediaItemPropertyTitle] = song.name
+        info[MPMediaItemPropertyArtist] = song.performer
+        info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.currentTime
+        info[MPMediaItemPropertyPlaybackDuration] = player?.duration
+        info[MPNowPlayingInfoPropertyPlaybackRate] = isPlaying ? 1.0 : 0.0
+
+        if let image = UIImage(named: song.thumbnail) {
+            info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: image.size) { _ in image }
+        }
+
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
+    }
     
     @objc private func updateSlider() {
         slider.value = Float(player?.currentTime ?? 0)
@@ -115,17 +141,16 @@ class ViewController: UIViewController {
         playOrPauseBtn.setImage(UIImage(named: isPlaying ? "pause_circle" : "play_circle"), for:  .normal)
     }
     
-    
     @IBAction func playOrPauseTapped(_ sender: Any) {
-        if let player  = player {
+        if let player = player {
             if isPlaying {
                 player.pause()
             } else {
                 player.play()
             }
-            
             isPlaying = !isPlaying
             setBtnPlayOrPause()
+            updateNowPlayingInfo(song: songs[curentIndex])
         }
     }
     
