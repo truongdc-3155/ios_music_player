@@ -16,18 +16,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ybc-QB-uF3">
-                                <rect key="frame" x="0.0" y="172" width="393" height="612"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ybc-QB-uF3">
+                                <rect key="frame" x="0.0" y="208" width="393" height="576"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Music Player" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYh-Eq-b2R">
+                                <rect key="frame" x="16" y="171" width="361" height="29"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="lFU-o6-yIs"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="lFU-o6-yIs" firstAttribute="trailing" secondItem="ybc-QB-uF3" secondAttribute="trailing" id="12H-We-MHI"/>
-                            <constraint firstItem="ybc-QB-uF3" firstAttribute="top" secondItem="lFU-o6-yIs" secondAttribute="top" id="sKM-eC-hbq"/>
-                            <constraint firstItem="ybc-QB-uF3" firstAttribute="leading" secondItem="lFU-o6-yIs" secondAttribute="leading" id="sVz-2p-AJg"/>
-                            <constraint firstItem="lFU-o6-yIs" firstAttribute="bottom" secondItem="ybc-QB-uF3" secondAttribute="bottom" id="zes-st-qBe"/>
+                            <constraint firstItem="lFU-o6-yIs" firstAttribute="trailing" secondItem="uYh-Eq-b2R" secondAttribute="trailing" constant="16" id="7ZA-mt-Mew"/>
+                            <constraint firstItem="uYh-Eq-b2R" firstAttribute="top" secondItem="lFU-o6-yIs" secondAttribute="top" constant="50" id="NJk-Rb-fZg"/>
+                            <constraint firstItem="uYh-Eq-b2R" firstAttribute="leading" secondItem="lFU-o6-yIs" secondAttribute="leading" constant="16" id="m8y-Rd-kaO"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="j5t-35-Q6F"/>
@@ -37,7 +43,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VZh-PF-qw9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="208" y="131"/>
+            <point key="canvasLocation" x="206.87022900763358" y="130.98591549295776"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
